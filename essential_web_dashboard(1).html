@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essential Web Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth Wallpaper Crossfade */
+        .wallpaper-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1.5s ease-in-out;
+            z-index: -2;
+        }
+
+        /* Glassmorphism utility classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card:hover, .glass-card.keyboard-focused {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 14px 30px -10px rgba(14, 165, 233, 0.35);
+        }
+
+        .dark .glass-card:hover, .dark .glass-card.keyboard-focused {
+            box-shadow: 0 14px 30px -10px rgba(14, 165, 233, 0.5);
+        }
+
+        .glass-card.keyboard-focused {
+            outline: 2px solid #0ea5e9;
+            outline-offset: 2px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.7);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 dark:text-slate-100 transition-colors duration-300 flex flex-col font-sans antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- Embedded Apps Database in JSON Format -->
+    <script type="application/json" id="appsJsonData">
+    [
+        {
+            "id": "chatgpt",
+            "name": "ChatGPT",
+            "url": "https://chatgpt.com",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "Conversational AI by OpenAI for brainstorming, coding & research.",
+            "iconClass": "fa-robot",
+            "color": "from-emerald-500 to-teal-600"
+        },
+        {
+            "id": "claude",
+            "name": "Claude AI",
+            "url": "https://claude.ai",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "Advanced assistant by Anthropic for reasoning, writing & analysis.",
+            "iconClass": "fa-brain",
+            "color": "from-amber-500 to-orange-600"
+        },
+        {
+            "id": "gemini",
+            "name": "Google Gemini",
+            "url": "https://gemini.google.com",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "Google's multimodal AI engine integrated with web ecosystem.",
+            "iconClass": "fa-sparkles",
+            "color": "from-blue-500 to-indigo-600"
+        },
+        {
+            "id": "perplexity",
+            "name": "Perplexity AI",
+            "url": "https://perplexity.ai",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "AI search engine with real-time web citations.",
+            "iconClass": "fa-magnifying-glass-chart",
+            "color": "from-cyan-500 to-blue-600"
+        },
+        {
+            "id": "deepseek",
+            "name": "DeepSeek",
+            "url": "https://chat.deepseek.com",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "High-performance open reasoning and coding AI models.",
+            "iconClass": "fa-microchip",
+            "color": "from-blue-600 to-cyan-500"
+        },
+        {
+            "id": "poe",
+            "name": "Poe by Quora",
+            "url": "https://poe.com",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "Fast ecosystem to chat with multiple top AI models in one place.",
+            "iconClass": "fa-comments-dollar",
+            "color": "from-purple-600 to-indigo-700"
+        },
+        {
+            "id": "huggingface",
+            "name": "Hugging Face",
+            "url": "https://huggingface.co",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "The AI community building the future of open-source models.",
+            "iconClass": "fa-face-smile-beam",
+            "color": "from-amber-400 to-yellow-600"
+        },
+        {
+            "id": "midjourney",
+            "name": "Midjourney",
+            "url": "https://www.midjourney.com",
+            "category": "ai",
+            "categoryLabel": "AI Work",
+            "desc": "Generative AI platform creating artistic high-detail imagery.",
+            "iconClass": "fa-wand-magic-sparkles",
+            "color": "from-indigo-600 to-purple-800"
+        },
+        {
+            "id": "protonmail",
+            "name": "Proton Mail",
+            "url": "https://mail.proton.me",
+            "category": "proton",
+            "categoryLabel": "Proton Suite",
+            "desc": "Encrypted Swiss email protecting your privacy & communications.",
+            "iconClass": "fa-envelope-shield",
+            "color": "from-violet-600 to-purple-800"
+        },
+        {
+            "id": "protoncalendar",
+            "name": "Proton Calendar",
+            "url": "https://calendar.proton.me",
+            "category": "proton",
+            "categoryLabel": "Proton Suite",
+            "desc": "Encrypted schedule manager keeping your events private.",
+            "iconClass": "fa-calendar-check",
+            "color": "from-purple-600 to-indigo-700"
+        },
+        {
+            "id": "protondrive",
+            "name": "Proton Drive",
+            "url": "https://drive.proton.me",
+            "category": "proton",
+            "categoryLabel": "Proton Suite",
+            "desc": "Secure end-to-end encrypted cloud storage for files & photos.",
+            "iconClass": "fa-cloud-arrow-up",
+            "color": "from-indigo-600 to-blue-700"
+        },
+        {
+            "id": "protonpass",
+            "name": "Proton Pass",
+            "url": "https://pass.proton.me",
+            "category": "proton",
+            "categoryLabel": "Proton Suite",
+            "desc": "End-to-end encrypted password manager & email alias creator.",
+            "iconClass": "fa-key font-bold",
+            "color": "from-blue-600 to-violet-700"
+        },
+        {
+            "id": "protonvpn",
+            "name": "Proton VPN",
+            "url": "https://protonvpn.com",
+            "category": "proton",
+            "categoryLabel": "Proton Suite",
+            "desc": "High-speed Swiss VPN safeguarding online internet privacy.",
+            "iconClass": "fa-shield-halved",
+            "color": "from-emerald-600 to-teal-800"
+        },
+        {
+            "id": "gmail",
+            "name": "Gmail",
+            "url": "https://mail.google.com",
+            "category": "google",
+            "categoryLabel": "Google Suite",
+            "desc": "Google's email service with fast search, spam protection & integration.",
+            "iconClass": "fa-envelope",
+            "color": "from-red-500 to-rose-600"
+        },
+        {
+            "id": "gdrive",
+            "name": "Google Drive",
+            "url": "https://drive.google.com",
+            "category": "google",
+            "categoryLabel": "Google Suite",
+            "desc": "Secure cloud file storage, document sharing & synchronization.",
+            "iconClass": "fa-hard-drive",
+            "color": "from-amber-500 to-emerald-500"
+        },
+        {
+            "id": "gdocs",
+            "name": "Google Docs",
+            "url": "https://docs.google.com",
+            "category": "google",
+            "categoryLabel": "Google Suite",
+            "desc": "Collaborative real-time online document creation & editing.",
+            "iconClass": "fa-file-lines",
+            "color": "from-blue-500 to-cyan-600"
+        },
+        {
+            "id": "gsheets",
+            "name": "Google Sheets",
+            "url": "https://sheets.google.com",
+            "category": "google",
+            "categoryLabel": "Google Suite",
+            "desc": "Cloud spreadsheets with data visualization & formulas.",
+            "iconClass": "fa-table",
+            "color": "from-emerald-500 to-green-700"
+        },
+        {
+            "id": "gmaps",
+            "name": "Google Maps",
+            "url": "https://maps.google.com",
+            "category": "google",
+            "categoryLabel": "Google Suite",
+            "desc": "Satellite imagery, aerial photography, street maps & navigation.",
+            "iconClass": "fa-map-location-dot",
+            "color": "from-emerald-500 to-blue-600"
+        },
+        {
+            "id": "gtranslate",
+            "name": "Google Translate",
+            "url": "https://translate.google.com",
+            "category": "google",
+            "categoryLabel": "Google Suite",
+            "desc": "Multilingual instant machine translation service.",
+            "iconClass": "fa-language",
+            "color": "from-blue-600 to-indigo-600"
+        },
+        {
+            "id": "outlook",
+            "name": "Outlook",
+            "url": "https://outlook.live.com",
+            "category": "microsoft",
+            "categoryLabel": "Microsoft Suite",
+            "desc": "Microsoft personal email, calendar, and contacts manager.",
+            "iconClass": "fa-envelope-open-text",
+            "color": "from-blue-600 to-sky-700"
+        },
+        {
+            "id": "msword",
+            "name": "Microsoft Word Online",
+            "url": "https://www.microsoft365.com/launch/word",
+            "category": "microsoft",
+            "categoryLabel": "Microsoft Suite",
+            "desc": "Create, edit and share Word documents online.",
+            "iconClass": "fa-file-word",
+            "color": "from-blue-700 to-indigo-800"
+        },
+        {
+            "id": "msexcel",
+            "name": "Microsoft Excel Online",
+            "url": "https://www.microsoft365.com/launch/excel",
+            "category": "microsoft",
+            "categoryLabel": "Microsoft Suite",
+            "desc": "Powerful spreadsheets and data analysis in your browser.",
+            "iconClass": "fa-file-excel",
+            "color": "from-emerald-600 to-teal-800"
+        },
+        {
+            "id": "onedrive",
+            "name": "Microsoft OneDrive",
+            "url": "https://onedrive.live.com",
+            "category": "microsoft",
+            "categoryLabel": "Microsoft Suite",
+            "desc": "Microsoft cloud storage & file backup.",
+            "iconClass": "fa-cloud",
+            "color": "from-sky-500 to-blue-700"
+        },
+        {
+            "id": "copilot",
+            "name": "Microsoft Copilot",
+            "url": "https://copilot.microsoft.com",
+            "category": "microsoft",
+            "categoryLabel": "Microsoft Suite",
+            "desc": "AI assistant powered by Microsoft & OpenAI technology.",
+            "iconClass": "fa-sparkles",
+            "color": "from-teal-500 to-blue-600"
+        },
+        {
+            "id": "wikipedia",
+            "name": "Wikipedia",
+            "url": "https://wikipedia.org",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "The free multilingual online encyclopedia written by volunteers.",
+            "iconClass": "fa-globe",
+            "color": "from-slate-600 to-zinc-800"
+        },
+        {
+            "id": "wikihow",
+            "name": "wikiHow",
+            "url": "https://www.wikihow.com",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "Trusted step-by-step how-to guides and tutorials on any topic.",
+            "iconClass": "fa-lightbulb",
+            "color": "from-emerald-600 to-green-700"
+        },
+        {
+            "id": "wikiversity",
+            "name": "Wikiversity",
+            "url": "https://www.wikiversity.org",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "Open educational learning resources, projects & research.",
+            "iconClass": "fa-graduation-cap",
+            "color": "from-blue-600 to-sky-700"
+        },
+        {
+            "id": "wikibooks",
+            "name": "Wikibooks",
+            "url": "https://www.wikibooks.org",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "Free collection of open-content textbooks and manuals.",
+            "iconClass": "fa-book-bookmark",
+            "color": "from-amber-600 to-orange-700"
+        },
+        {
+            "id": "wiktionary",
+            "name": "Wiktionary",
+            "url": "https://www.wiktionary.org",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "Free dictionary and thesaurus with definitions & etymologies.",
+            "iconClass": "fa-language",
+            "color": "from-indigo-600 to-purple-700"
+        },
+        {
+            "id": "wikimedia",
+            "name": "Wikimedia Commons",
+            "url": "https://commons.wikimedia.org",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "Database of freely usable educational media files & images.",
+            "iconClass": "fa-images",
+            "color": "from-cyan-600 to-teal-700"
+        },
+        {
+            "id": "wikidata",
+            "name": "Wikidata",
+            "url": "https://www.wikidata.org",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "Free open knowledge base readable by humans and machines.",
+            "iconClass": "fa-database",
+            "color": "from-slate-700 to-blue-800"
+        },
+        {
+            "id": "wikivoyage",
+            "name": "Wikivoyage",
+            "url": "https://www.wikivoyage.org",
+            "category": "wiki",
+            "categoryLabel": "Wiki & Knowledge",
+            "desc": "Free worldwide travel guide written by travelers.",
+            "iconClass": "fa-plane-departure",
+            "color": "from-teal-600 to-emerald-700"
+        },
+        {
+            "id": "tempmail",
+            "name": "Temp Mail",
+            "url": "https://temp-mail.org/en/",
+            "category": "email",
+            "categoryLabel": "Email & Privacy",
+            "desc": "Disposable temporary email address to avoid spam and stay safe.",
+            "iconClass": "fa-clock-rotate-left",
+            "color": "from-indigo-500 to-blue-700"
+        },
+        {
+            "id": "tuta",
+            "name": "Tuta (Tutanota)",
+            "url": "https://tuta.com",
+            "category": "email",
+            "categoryLabel": "Email & Privacy",
+            "desc": "Zero-knowledge end-to-end encrypted green email service.",
+            "iconClass": "fa-envelope-shield",
+            "color": "from-red-500 to-rose-700"
+        },
+        {
+            "id": "duckduckgo",
+            "name": "DuckDuckGo",
+            "url": "https://duckduckgo.com",
+            "category": "email",
+            "categoryLabel": "Email & Privacy",
+            "desc": "Privacy-first search engine that does not track you.",
+            "iconClass": "fa-user-shield",
+            "color": "from-orange-500 to-amber-600"
+        },
+        {
+            "id": "bitwarden",
+            "name": "Bitwarden",
+            "url": "https://bitwarden.com",
+            "category": "email",
+            "categoryLabel": "Email & Privacy",
+            "desc": "Open source password manager and secure vault.",
+            "iconClass": "fa-key",
+            "color": "from-blue-600 to-sky-700"
+        },
+        {
+            "id": "simplelogin",
+            "name": "SimpleLogin",
+            "url": "https://simplelogin.io",
+            "category": "email",
+            "categoryLabel": "Email & Privacy",
+            "desc": "Open-source email alias protection by Proton.",
+            "iconClass": "fa-user-lock",
+            "color": "from-blue-600 to-indigo-700"
+        },
+        {
+            "id": "facebook",
+            "name": "Facebook",
+            "url": "https://facebook.com",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Connect with friends, family and people who share your interests.",
+            "iconClass": "fa-brands fa-facebook-f",
+            "color": "from-blue-600 to-blue-800"
+        },
+        {
+            "id": "instagram",
+            "name": "Instagram",
+            "url": "https://instagram.com",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Share photos, videos, stories & messages with friends.",
+            "iconClass": "fa-brands fa-instagram",
+            "color": "from-pink-500 to-purple-700"
+        },
+        {
+            "id": "twitter",
+            "name": "X (Twitter)",
+            "url": "https://x.com",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Real-time news, conversations & social updates.",
+            "iconClass": "fa-brands fa-x-twitter",
+            "color": "from-slate-800 to-black"
+        },
+        {
+            "id": "discord",
+            "name": "Discord",
+            "url": "https://discord.com",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Voice, video and text chat channels for communities & friends.",
+            "iconClass": "fa-brands fa-discord",
+            "color": "from-indigo-500 to-purple-600"
+        },
+        {
+            "id": "reddit",
+            "name": "Reddit",
+            "url": "https://reddit.com",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Network of communities for discussions, news & interests.",
+            "iconClass": "fa-brands fa-reddit-alien",
+            "color": "from-orange-600 to-red-600"
+        },
+        {
+            "id": "youtube",
+            "name": "YouTube",
+            "url": "https://youtube.com",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Global video sharing, live streaming & content platform.",
+            "iconClass": "fa-brands fa-youtube",
+            "color": "from-red-600 to-rose-700"
+        },
+        {
+            "id": "spotify",
+            "name": "Spotify",
+            "url": "https://open.spotify.com",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Digital music, podcast, and audio streaming service.",
+            "iconClass": "fa-brands fa-spotify",
+            "color": "from-emerald-500 to-green-600"
+        },
+        {
+            "id": "twitch",
+            "name": "Twitch",
+            "url": "https://twitch.tv",
+            "category": "social",
+            "categoryLabel": "Social & Media",
+            "desc": "Live streaming platform for gaming, music & entertainment.",
+            "iconClass": "fa-brands fa-twitch",
+            "color": "from-purple-600 to-indigo-600"
+        },
+        {
+            "id": "github",
+            "name": "GitHub",
+            "url": "https://github.com",
+            "category": "work",
+            "categoryLabel": "Work & Productivity",
+            "desc": "Code hosting platform for version control & collaboration.",
+            "iconClass": "fa-brands fa-github",
+            "color": "from-slate-700 to-slate-900"
+        },
+        {
+            "id": "notion",
+            "name": "Notion",
+            "url": "https://notion.so",
+            "category": "work",
+            "categoryLabel": "Work & Productivity",
+            "desc": "All-in-one workspace for notes, docs, and project management.",
+            "iconClass": "fa-book-open",
+            "color": "from-stone-700 to-stone-900"
+        },
+        {
+            "id": "figma",
+            "name": "Figma",
+            "url": "https://figma.com",
+            "category": "work",
+            "categoryLabel": "Work & Productivity",
+            "desc": "Collaborative interface design and prototyping tool.",
+            "iconClass": "fa-bezier-curve",
+            "color": "from-purple-500 to-pink-500"
+        },
+        {
+            "id": "canva",
+            "name": "Canva",
+            "url": "https://canva.com",
+            "category": "work",
+            "categoryLabel": "Work & Productivity",
+            "desc": "Visual design platform for graphics, slides, and media.",
+            "iconClass": "fa-palette",
+            "color": "from-sky-400 to-teal-500"
+        },
+        {
+            "id": "speedtest",
+            "name": "Speedtest",
+            "url": "https://speedtest.net",
+            "category": "utilities",
+            "categoryLabel": "Utilities",
+            "desc": "Test internet connectivity, download & upload speed.",
+            "iconClass": "fa-gauge-high",
+            "color": "from-cyan-500 to-blue-600"
+        },
+        {
+            "id": "archive",
+            "name": "Archive.org",
+            "url": "https://archive.org",
+            "category": "utilities",
+            "categoryLabel": "Utilities",
+            "desc": "Wayback Machine & free digital library of web history.",
+            "iconClass": "fa-landmark",
+            "color": "from-stone-600 to-zinc-800"
+        }
+    ]
+    </script>
+
+    <!-- Background Wallpaper Dual Layers for Crossfading -->
+    <div id="bgLayer1" class="wallpaper-layer opacity-100"></div>
+    <div id="bgLayer2" class="wallpaper-layer opacity-0"></div>
+    <!-- Dark/Light Tint Overlay for Contrast -->
+    <div class="fixed inset-0 bg-slate-100/30 dark:bg-slate-950/60 pointer-events-none -z-10 transition-colors duration-500"></div>
+
+    <div class="flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Header / Controls Bar -->
+        <header class="glass-panel rounded-2xl p-4 sm:p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-lg">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid font-bold fa-compass text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl sm:text-2xl tracking-tight bg-gradient-to-r from-sky-600 to-indigo-600 dark:from-sky-400 dark:to-indigo-300 bg-clip-text text-transparent">
+                        Essential Web Hub
+                    </h1>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 font-medium">Your curated gateway to top tools & services</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Controls (Theme & Wallpaper) -->
+            <div class="flex flex-wrap items-center gap-3 text-xs">
+                <!-- Wallpaper Controls -->
+                <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
+                    <button id="prevWallpaperBtn" title="Previous Wallpaper" class="hover:text-sky-500 transition-colors px-1">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button id="toggleRotateBtn" title="Toggle Auto Rotation" class="flex items-center gap-1.5 font-medium px-1 hover:text-sky-500 transition-colors">
+                        <i id="rotateIcon" class="fa-solid fa-sync fa-spin text-sky-500"></i>
+                        <span id="rotateStatusText">Auto</span>
+                    </button>
+                    <button id="nextWallpaperBtn" title="Next Wallpaper" class="hover:text-sky-500 transition-colors px-1">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Theme Sync Mode Status -->
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
+                    <span id="themeIndicatorIcon" class="text-amber-500 dark:text-sky-400">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    </span>
+                    <span id="themeStatusText" class="font-medium text-slate-700 dark:text-slate-300">System Theme Sync</span>
+                    <button id="toggleThemeModeBtn" title="Cycle Theme (Auto Sync / Dark / Light)" class="ml-1 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search & Filter Hero Section -->
+        <section class="mb-8 flex flex-col items-center">
+            <div class="w-full max-w-2xl relative mb-4">
+                <div class="relative flex items-center">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-lg pointer-events-none"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Search apps, wiki, proton, google (Ctrl + S)..." 
+                        autocomplete="off"
+                        class="w-full pl-12 pr-32 py-4 rounded-2xl glass-panel text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-base shadow-xl focus:outline-none focus:ring-2 focus:ring-sky-500/70 border-white/40 dark:border-white/10 transition-all"
+                    >
+                    <div class="absolute right-3 flex items-center gap-1.5 pointer-events-none">
+                        <kbd class="hidden sm:inline-block px-2 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-200/60 dark:bg-slate-800/80 rounded border border-slate-300/60 dark:border-slate-700 shadow-sm">Ctrl + S</kbd>
+                        <kbd id="escBadge" class="hidden sm:inline-block px-2 py-1 text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-200/60 dark:bg-slate-800/80 rounded border border-slate-300/60 dark:border-slate-700 shadow-sm">Esc</kbd>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Filters -->
+            <div id="categoryChips" class="flex flex-wrap justify-center gap-2">
+                <button data-category="all" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all shadow-sm bg-sky-500 text-white">All</button>
+                <button data-category="ai" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">AI Work</button>
+                <button data-category="proton" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Proton Suite</button>
+                <button data-category="google" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Google Suite</button>
+                <button data-category="microsoft" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Microsoft Suite</button>
+                <button data-category="wiki" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Wiki Resources</button>
+                <button data-category="email" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Email & Privacy</button>
+                <button data-category="social" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Social & Media</button>
+                <button data-category="work" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Work & Productivity</button>
+                <button data-category="utilities" class="category-chip px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all glass-panel text-slate-700 dark:text-slate-300 hover:bg-sky-500/20">Utilities</button>
+            </div>
+        </section>
+
+        <!-- Main Apps Grid -->
+        <main class="flex-1">
+            <div id="appsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- App Cards will be populated dynamically -->
+            </div>
+
+            <!-- Empty Search State -->
+            <div id="noResults" class="hidden flex flex-col items-center justify-center py-16 text-center">
+                <div class="w-16 h-16 rounded-full glass-panel flex items-center justify-center text-slate-400 mb-4 text-2xl">
+                    <i class="fa-solid fa-ghost"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200 mb-1">No apps found</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm mb-4">We couldn't find anything matching your search term.</p>
+                <button id="clearSearchBtn" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-semibold transition-colors">Clear Search (Esc)</button>
+            </div>
+        </main>
+
+        <!-- Shortcut & Keyboard Instruction Footer -->
+        <footer class="mt-12 glass-panel rounded-2xl p-4 text-xs text-slate-600 dark:text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2 flex-wrap">
+                <i class="fa-solid fa-keyboard text-sky-500 text-sm"></i>
+                <span><strong class="text-slate-800 dark:text-slate-200">Mouse-Free Controls:</strong> 
+                    <kbd class="px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 font-mono">Ctrl + S</kbd> Search &nbsp;|&nbsp; 
+                    <kbd class="px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 font-mono">↑ ↓ ← →</kbd> Navigate &nbsp;|&nbsp; 
+                    <kbd class="px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 font-mono">Enter</kbd> Open Selected &nbsp;|&nbsp; 
+                    <kbd class="px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 font-mono">Esc</kbd> Clear
+                </span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Links open in a new tab</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Application JavaScript -->
+    <script>
+        // Safe Settings Storage Helpers (Safely handles sandbox environments)
+        function saveSetting(key, val) {
+            try {
+                localStorage.setItem('web_hub_' + key, JSON.stringify(val));
+            } catch (e) {
+                // Safe silent catch if localStorage is restricted by iframe policy
+            }
+        }
+
+        function getSetting(key, defaultVal) {
+            try {
+                const item = localStorage.getItem('web_hub_' + key);
+                return item !== null ? JSON.parse(item) : defaultVal;
+            } catch (e) {
+                return defaultVal;
+            }
+        }
+
+        // Load apps data from JSON script tag
+        const rawJsonText = document.getElementById('appsJsonData').textContent;
+        const appsDatabase = JSON.parse(rawJsonText);
+
+        // Wallpapers Collection (High Quality Unsplash Curated)
+        const wallpapers = [
+            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80",
+            "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1920&q=80",
+            "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80",
+            "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80",
+            "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1920&q=80",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+        ];
+
+        // App State restored from saved settings
+        let currentWallpaperIdx = getSetting('wallpaper_idx', 0);
+        let isAutoRotate = getSetting('wallpaper_rotate', true);
+        let wallpaperInterval = null;
+        let activeCategory = getSetting('active_category', 'all');
+        let themeMode = getSetting('theme_mode', 'auto'); // 'auto', 'dark', 'light'
+        let currentBgLayer = 1;
+        let selectedAppIndex = 0; // For mouse-free keyboard navigation
+
+        // DOM Elements
+        const appsGrid = document.getElementById('appsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const bgLayer1 = document.getElementById('bgLayer1');
+        const bgLayer2 = document.getElementById('bgLayer2');
+        const prevWallpaperBtn = document.getElementById('prevWallpaperBtn');
+        const nextWallpaperBtn = document.getElementById('nextWallpaperBtn');
+        const toggleRotateBtn = document.getElementById('toggleRotateBtn');
+        const rotateIcon = document.getElementById('rotateIcon');
+        const rotateStatusText = document.getElementById('rotateStatusText');
+        const toggleThemeModeBtn = document.getElementById('toggleThemeModeBtn');
+        const themeStatusText = document.getElementById('themeStatusText');
+        const themeIndicatorIcon = document.getElementById('themeIndicatorIcon');
+
+        // Initial setup
+        window.addEventListener('DOMContentLoaded', () => {
+            syncCategoryChipsUI();
+            renderApps();
+            initWallpaper();
+            setupThemeSync();
+            setupEventListeners();
+        });
+
+        function syncCategoryChipsUI() {
+            document.querySelectorAll('.category-chip').forEach(chip => {
+                if (chip.dataset.category === activeCategory) {
+                    chip.classList.remove('glass-panel', 'text-slate-700', 'dark:text-slate-300');
+                    chip.classList.add('bg-sky-500', 'text-white');
+                } else {
+                    chip.classList.remove('bg-sky-500', 'text-white');
+                    chip.classList.add('glass-panel', 'text-slate-700', 'dark:text-slate-300');
+                }
+            });
+        }
+
+        // Render Apps Grid & Apply Keyboard Focus Selection
+        function renderApps() {
+            const query = searchInput.value.trim().toLowerCase();
+            appsGrid.innerHTML = '';
+
+            const filtered = appsDatabase.filter(app => {
+                const matchesCategory = activeCategory === 'all' || app.category === activeCategory;
+                const matchesSearch = app.name.toLowerCase().includes(query) || 
+                                      app.categoryLabel.toLowerCase().includes(query) ||
+                                      app.desc.toLowerCase().includes(query) ||
+                                      app.id.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+                selectedAppIndex = -1;
+            } else {
+                noResults.classList.add('hidden');
+                
+                // Keep selection within bounds
+                if (selectedAppIndex >= filtered.length) {
+                    selectedAppIndex = filtered.length - 1;
+                }
+                if (selectedAppIndex < 0) {
+                    selectedAppIndex = 0;
+                }
+
+                filtered.forEach((app, index) => {
+                    const card = document.createElement('a');
+                    card.href = app.url;
+                    card.target = "_blank";
+                    card.rel = "noopener noreferrer";
+                    card.dataset.index = index;
+                    
+                    const isFocused = index === selectedAppIndex;
+                    const focusClasses = isFocused ? 'keyboard-focused' : '';
+
+                    card.className = `app-card glass-card rounded-2xl p-5 flex flex-col justify-between group text-left ${focusClasses}`;
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${app.color} flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform">
+                                    <i class="${app.iconClass} text-xl"></i>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-black/5 dark:bg-white/10 text-slate-600 dark:text-slate-300">
+                                    ${app.categoryLabel}
+                                </span>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 dark:text-white group-hover:text-sky-500 dark:group-hover:text-sky-400 transition-colors flex items-center gap-1.5">
+                                ${app.name}
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-0 group-hover:opacity-100 transition-opacity text-sky-500"></i>
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-2 font-normal leading-relaxed">
+                                ${app.desc}
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                            <span class="flex items-center gap-1">
+                                ${isFocused ? '<span class="px-1.5 py-0.5 rounded bg-sky-500 text-white font-mono text-[9px]">ENTER TO OPEN</span>' : 'Open service'}
+                            </span>
+                            <span class="font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                                Launch <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                            </span>
+                        </div>
+                    `;
+
+                    // Mouse hover synchronizes keyboard highlight index
+                    card.addEventListener('mouseenter', () => {
+                        updateCardSelection(index);
+                    });
+
+                    appsGrid.appendChild(card);
+                });
+
+                // Scroll focused card into view smoothly if navigating via keyboard
+                const activeCard = appsGrid.querySelector('.keyboard-focused');
+                if (activeCard && document.activeElement === searchInput) {
+                    activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        }
+
+        function updateCardSelection(newIndex) {
+            const cards = appsGrid.querySelectorAll('.app-card');
+            if (cards.length === 0) return;
+            
+            selectedAppIndex = Math.max(0, Math.min(newIndex, cards.length - 1));
+            
+            cards.forEach((card, i) => {
+                if (i === selectedAppIndex) {
+                    card.classList.add('keyboard-focused');
+                    const badgeContainer = card.querySelector('.mt-4.pt-3 span');
+                    if (badgeContainer) badgeContainer.innerHTML = '<span class="px-1.5 py-0.5 rounded bg-sky-500 text-white font-mono text-[9px]">ENTER TO OPEN</span>';
+                } else {
+                    card.classList.remove('keyboard-focused');
+                    const badgeContainer = card.querySelector('.mt-4.pt-3 span');
+                    if (badgeContainer) badgeContainer.innerHTML = 'Open service';
+                }
+            });
+        }
+
+        // Rotating Wallpaper Manager
+        function initWallpaper() {
+            if (currentWallpaperIdx < 0 || currentWallpaperIdx >= wallpapers.length) {
+                currentWallpaperIdx = 0;
+            }
+            bgLayer1.style.backgroundImage = `url('${wallpapers[currentWallpaperIdx]}')`;
+            
+            if (isAutoRotate) {
+                rotateIcon.classList.add('fa-spin');
+                rotateStatusText.textContent = "Auto";
+                startWallpaperRotation();
+            } else {
+                rotateIcon.classList.remove('fa-spin');
+                rotateStatusText.textContent = "Paused";
+                stopWallpaperRotation();
+            }
+        }
+
+        function changeWallpaper(nextIdx) {
+            if (nextIdx !== undefined) {
+                currentWallpaperIdx = nextIdx;
+            } else {
+                currentWallpaperIdx = (currentWallpaperIdx + 1) % wallpapers.length;
+            }
+
+            saveSetting('wallpaper_idx', currentWallpaperIdx);
+            const nextImg = wallpapers[currentWallpaperIdx];
+
+            if (currentBgLayer === 1) {
+                bgLayer2.style.backgroundImage = `url('${nextImg}')`;
+                bgLayer2.classList.remove('opacity-0');
+                bgLayer2.classList.add('opacity-100');
+                bgLayer1.classList.remove('opacity-100');
+                bgLayer1.classList.add('opacity-0');
+                currentBgLayer = 2;
+            } else {
+                bgLayer1.style.backgroundImage = `url('${nextImg}')`;
+                bgLayer1.classList.remove('opacity-0');
+                bgLayer1.classList.add('opacity-100');
+                bgLayer2.classList.remove('opacity-100');
+                bgLayer2.classList.add('opacity-0');
+                currentBgLayer = 1;
+            }
+        }
+
+        function startWallpaperRotation() {
+            stopWallpaperRotation();
+            if (isAutoRotate) {
+                wallpaperInterval = setInterval(() => {
+                    changeWallpaper();
+                }, 12000);
+            }
+        }
+
+        function stopWallpaperRotation() {
+            if (wallpaperInterval) {
+                clearInterval(wallpaperInterval);
+                wallpaperInterval = null;
+            }
+        }
+
+        // Auto System Theme Synchronization Logic
+        function setupThemeSync() {
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+            function applyTheme(isDark) {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+
+            function syncWithSystem() {
+                if (themeMode === 'auto') {
+                    applyTheme(mediaQuery.matches);
+                    themeStatusText.textContent = "System Theme Sync";
+                    themeIndicatorIcon.innerHTML = `<i class="fa-solid fa-circle-half-stroke"></i>`;
+                } else if (themeMode === 'dark') {
+                    applyTheme(true);
+                    themeStatusText.textContent = "Dark Theme";
+                    themeIndicatorIcon.innerHTML = `<i class="fa-solid fa-moon"></i>`;
+                } else {
+                    applyTheme(false);
+                    themeStatusText.textContent = "Light Theme";
+                    themeIndicatorIcon.innerHTML = `<i class="fa-solid fa-sun"></i>`;
+                }
+                saveSetting('theme_mode', themeMode);
+            }
+
+            // Listen for system preference updates
+            mediaQuery.addEventListener('change', (e) => {
+                if (themeMode === 'auto') {
+                    applyTheme(e.matches);
+                }
+            });
+
+            syncWithSystem();
+
+            // Cycle Theme Modes
+            toggleThemeModeBtn.addEventListener('click', () => {
+                if (themeMode === 'auto') themeMode = 'dark';
+                else if (themeMode === 'dark') themeMode = 'light';
+                else themeMode = 'auto';
+                syncWithSystem();
+            });
+        }
+
+        // Event Listeners & Mouse-Free Keyboard Shortcuts
+        function setupEventListeners() {
+            // Search Input Typing Listener -> Always selects 1st matching item automatically
+            searchInput.addEventListener('input', () => {
+                selectedAppIndex = 0;
+                renderApps();
+            });
+
+            // Category Filter Chips
+            document.querySelectorAll('.category-chip').forEach(chip => {
+                chip.addEventListener('click', (e) => {
+                    activeCategory = e.target.dataset.category;
+                    saveSetting('active_category', activeCategory);
+                    syncCategoryChipsUI();
+                    selectedAppIndex = 0;
+                    renderApps();
+                });
+            });
+
+            // Clear search button
+            clearSearchBtn.addEventListener('click', resetSearch);
+
+            // Global Mouse-Free Keyboard Shortcuts & Arrow Key Navigation
+            document.addEventListener('keydown', (e) => {
+                const cards = appsGrid.querySelectorAll('.app-card');
+
+                // Ctrl + S (or Cmd + S) -> Focus Search Input
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    searchInput.focus();
+                    searchInput.select();
+                    selectedAppIndex = 0;
+                    updateCardSelection(0);
+                    return;
+                }
+
+                // Esc -> Clear Search Input & Selection
+                if (e.key === 'Escape') {
+                    resetSearch();
+                    return;
+                }
+
+                // Arrow Navigation (Down / Right -> Next, Up / Left -> Previous)
+                if (cards.length > 0) {
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        updateCardSelection(selectedAppIndex + 1);
+                        cards[selectedAppIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        updateCardSelection(selectedAppIndex - 1);
+                        cards[selectedAppIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+
+                // Enter Key -> Open currently highlighted app card in a new tab!
+                if (e.key === 'Enter') {
+                    const focusedCard = cards[selectedAppIndex] || appsGrid.querySelector('.app-card');
+                    if (focusedCard) {
+                        e.preventDefault();
+                        window.open(focusedCard.href, '_blank', 'noopener,noreferrer');
+                    }
+                }
+            });
+
+            // Wallpaper Manual Controls
+            prevWallpaperBtn.addEventListener('click', () => {
+                const prevIdx = (currentWallpaperIdx - 1 + wallpapers.length) % wallpapers.length;
+                changeWallpaper(prevIdx);
+                if (isAutoRotate) startWallpaperRotation();
+            });
+
+            nextWallpaperBtn.addEventListener('click', () => {
+                changeWallpaper();
+                if (isAutoRotate) startWallpaperRotation();
+            });
+
+            toggleRotateBtn.addEventListener('click', () => {
+                isAutoRotate = !isAutoRotate;
+                saveSetting('wallpaper_rotate', isAutoRotate);
+                if (isAutoRotate) {
+                    rotateIcon.classList.add('fa-spin');
+                    rotateStatusText.textContent = "Auto";
+                    startWallpaperRotation();
+                } else {
+                    rotateIcon.classList.remove('fa-spin');
+                    rotateStatusText.textContent = "Paused";
+                    stopWallpaperRotation();
+                }
+            });
+        }
+
+        // Helper to clear search & reset keyboard selection
+        function resetSearch() {
+            searchInput.value = '';
+            searchInput.blur();
+            selectedAppIndex = 0;
+            renderApps();
+        }
+    </script>
+</body>
+</html>
